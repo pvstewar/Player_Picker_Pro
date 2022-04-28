@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Pick Your Player{% endblock %}
+{% block content%}
+<body>
+    <div class="container">
+        <div class="p-4"></div>
+        <h1>Enter player type and budget below to find your new player:</h1>
+        <form action = "{{ url_for('pickrec') }}" method = "POST">
+            <h3>Enter maximum wage for player in Euros</h3>
+            Max Wage<br>
+            <input type = "text" name="wg" /></br>
+            <h3>Enter Position needed to fill</h3>
+            <!--<input type = "text" name="pos"/>-->
+            <select class="form-select" name="pos" value="pos">
+            <option selected>Pick Postion from the list</option>
+            <option value="STRating">Striker</option>
+            <option value="LWRating">Left Wing</option>
+            <option value="LFRating">Left Forward</option>
+            <option value="CFRating">Center Forward</option>
+            <option value="RFRating">Right Forward</option>
+            <option value="RWRating">Right Wing</option>
+            <option value="CAMRating">Center Attack Midfield</option>
+            <option value="LMRating">Left Midfield</option>
+            <option value="CMRating">Center Midfield</option>
+            <option value="RMRating">Right Midfield</option>
+            <option value="LWBRating">Left Wingback</option>
+            <option value="CDMRating">Center Def Midfield</option>
+            <option value="RWBRating">Right Wingback</option>
+            <option value="LBRating">Left Back</option>
+            <option value="CBRating">Center Back</option>
+            <option value="RBRating">Right Back</option>
+            <option value="GKRating">Goalkeeper</option>
+            <p><input type = "submit" value = "submit" /></p>
+            </select>
+        </form>
+        <!--<form action = "{{ url_for('pickrec') }}" method = "POST">
+            <h3>Enter Position needed to fill</h3>
+            <select class="form-select" aria-label="Default select example">
+                <option selected>Pick Postion from the list</option>
+                <option value="STRating">Striker</option>
+                <option value="LWRating">Left Wing</option>
+                <option value="RWRating">Right Wing</option>
+            </select>
+            <input type = "value" name = "pos" /></br>-->
+        </form>
+    </div>
+   </body>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Team Result{% endblock %}
+{% block content%}
+<!doctype html>
+<html lang="en">
+<html>
+   <body>
+   <div class="p-4"></div>
+   <h1>Team Stats Result</h1>
+      <!--<table border = 1>
+        <style>
+            table, th, td {
+              border: 1px solid black;
+              border-collapse: collapse;
+            }
+            </style>-->
+      <table class="table table-dark table-hover">
+         <thead>
+            <td>ID</td>
+            <td>Team</td>
+            <td>League</td>
+            <td>LeagueId</td>
+            <td>Overall</td>
+            <td>Attack</td>
+            <td>Midfield</td>
+            <td>TransferBudget</td>
+            <td>DomesticPrestige</td>
+            <td>IntPrestige</td>
+            <td>Players</td>
+         </thead>
+         
+         {% for row in rows %}
+            <tr>
+               <td>{{row["ID"]}}</td>
+               <td>{{row["Name"]}}</td>
+               <td> {{ row["League"]}}</td>
+               <td>{{row["Overall"]}}</td>	
+               <td>{{row["Attack"]}}</td>	
+               <td>{{row["Midfield"]}}</td>	
+               <td>{{row["Defence"]}}</td>	
+               <td>{{row["TransferBudget"]}}</td>	
+               <td>{{row["DomesticPrestige"]}}</td>	
+               <td>{{row["IntPrestige"]}}</td>	
+               <td>{{row["Players"]}}</td>		
+
+            </tr>
+         {% endfor %}
+      </table>
+      
+      <a href = "/">Go back to home page</a>
+      
+   </body>
+</html>
+{% endblock %}

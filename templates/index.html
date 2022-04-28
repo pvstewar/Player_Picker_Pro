@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content%}
+<div class="container">
+    <div class="p-4"></div>
+    <div class="row">
+        <h1>Welcome to Player Picker Pro.</h1>
+    <div class="row">
+        <p>The desitination for finding the right soccer player for your esports, fantasy sports or IRL soccer team!</p>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>Check out Statistics on your favorite teams.</p>
+            <a href="/team_stats" class="btn btn-primary" role="button">Team Stats</a>
+        </div>
+        <div class="col">
+            <p>Look up all the details on your favorite players.</p>
+            <a href="/player_stats" class="btn btn-primary" role="button">Player Stats</a>
+        </div>
+        <div class="col">
+            <p>Look past the hype to find the most VALUABLE addition to your team.</p>
+            <a href="/pick_player" class="btn btn-primary" role="button">Player Picker</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

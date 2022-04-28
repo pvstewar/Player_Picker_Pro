@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Player Result{% endblock %}
+{% block content%}
+<html>
+   <body>
+   <div class="p-4"></div>
+   <h1>Player Stats Result</h1>
+   <table class="table table-dark table-hover">
+         <thead>
+            <!--<td>Row ID</td>-->
+            <td>Player id</td>
+            <td>Payer Name</td>
+            <td>Games</td>
+            <td>Time</td>
+            <td>Goals</td>
+            <td>Assists</td>
+            <td>Shots</td>
+            <td>Key Passes</td>
+            <!--<td>yellow_cards</td>
+            <td>red_cards</td>-->
+            <td>Position</td>
+            <td>Team Name</td>
+            <td>npg</td>
+            <td>Year</td>
+         </thead>
+         
+         {% for row in rows %}
+            <tr>
+                <!--<td>{{row["RowID"]}}</td>-->
+                <td>{{row["player_id"]}}</td>
+                <td>{{row["player_name"]}}</td>
+                <td>{{row["games"]}}</td>
+                <td>{{row["time"]}}</td>
+                <td>{{row["goals"]}}</td>
+                <td>{{row["assists"]}}</td>
+                <td>{{row["shots"]}}</td>
+                <td>{{row["key_passes"]}}</td>
+                <!--<td>{{row["yellow_cards"]}}</td>
+                <td>{{row["red_cards"]}}</td>-->
+                <td>{{row["position"]}}</td>
+                <td>{{row["team_name"]}}</td>
+                <td>{{row["npg"]}}</td>
+                <td>{{row["year"]}}</td>	
+            </tr>
+         {% endfor %}
+      </table>
+      
+      <a href = "/">Go back to home page</a>
+      
+   </body>
+</html>
+{% endblock %}

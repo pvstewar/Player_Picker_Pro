@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Player Picker Result{% endblock %}
+{% block content%}
+<html>
+   <body>
+   <div class="p-4"></div>
+   <h1>Players that fit your budget by position ratings:</h1>
+   <table class="table table-dark table-hover">
+         <thead>
+            <td>Player Name</td>
+            <td>Best Position</td>
+            <td>Age</td>
+            <td>Height</td>
+            <td>Weight</td>
+            <td>Overall Rating</td>
+            <td>Current Club</td>
+            <td>Wage in Euros</td>
+            <td>Skill Moves Rating</td>
+            <td>Shooting Rating</td>
+            <td>Passing Rating</td>
+            <td>Dribbling Rating</td>
+            <td>Defending Rating</td>
+            <td>Physicality Rating</td>
+            <td>Finishing Rating</td>
+            <td>Acceleration Rating</td>
+            <td>Agility Rating</td>
+            <td>Aggression Rating</td>
+            <td>Marking Rating</td>
+
+         </thead>
+         
+         {% for row in rows %}
+            <tr>
+                <td>{{row["FullName"]}}</td>
+                <td>{{row["BestPosition"]}}</td>
+                <td>{{row["Age"]}}</td>
+                <td>{{row["Height"]}}</td>
+                <td>{{row["Weight"]}}</td>
+                <td>{{row["Overall"]}}</td>
+                <td>{{row["Club"]}}</td>
+                <td>{{row["WageEUR"]}}</td>
+                <td>{{row["SkillMoves"]}}</td>
+                <td>{{row["ShootingTotal"]}}</td>
+                <td>{{row["PassingTotal"]}}</td>
+                <td>{{row["DribblingTotal"]}}</td>
+                <td>{{row["DefendingTotal"]}}</td>
+                <td>{{row["PhysicalityTotal"]}}</td>
+                <td>{{row["Finishing"]}}</td>
+                <td>{{row["Acceleration"]}}</td>
+                <td>{{row["Agility"]}}</td>
+                <td>{{row["Aggression"]}}</td>
+                <td>{{row["Marking"]}}</td>
+            </tr>
+         {% endfor %}
+      </table>
+      
+      <a href = "/">Go back to home page</a>
+      
+   </body>
+</html>
+{% endblock %}
