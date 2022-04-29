@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Team Stats Result{% endblock %}
+{% block content%}
+<!doctype html>
+<html lang="en">
+<html>
+   <body>
+   <div class="p-4"></div>
+   <h1>Team League Stats Result</h1>
+      <table class="table table-dark table-hover">
+         <thead>
+            <td>Team Name</td>
+            <td>League</td>
+            <td>Season</td>
+            <td>Finishing Rank</td>
+            <td>Games Played</td>
+            <td>Wins</td>
+            <td>Losses</td>
+            <td>Goals For</td>
+            <td>Goals Against</td>
+            <td>Goal Differential</td>
+            <td>Points</td>
+            <td>Assists</td>
+            <td>Shots on Target For</td>
+            <td>Shots on Traget Against</td>
+         </thead>
+         
+         {% for row in rows %}
+            <tr>
+               <td>{{row["squad"]}}</td>
+               <td>{{row["competition"]}}</td>
+               <td>{{row["season"]}}</td>
+               <td>{{row["rank"]}}</td>
+               <td>{{row["games"]}}</td>	
+               <td>{{row["wins"]}}</td>	
+               <td>{{row["losses"]}}</td>	
+               <td>{{row["goals_for"]}}</td>	
+               <td>{{row["goals_against"]}}</td>	
+               <td>{{row["goal_diff"]}}</td>	
+               <td>{{row["points"]}}</td>
+               <td>{{row["assists"]}}</td>
+               <td>{{row["shots_on_target_for"]}}</td>
+               <td>{{row["shots_on_target_against"]}}</td>
+
+            </tr>
+         {% endfor %}
+      </table>
+      
+      <a href = "/">Go back to home page</a>
+      
+   </body>
+</html>
+{% endblock %}

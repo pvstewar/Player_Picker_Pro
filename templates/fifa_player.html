@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Player FIFA Ratings{% endblock %}
+{% block content%}
+<html>
+   <body>
+      <div class="container">
+         <div class="p-4"></div>
+         <form action = "{{ url_for('fifa_plyrrec') }}" method = "POST">
+            <h3>Enter Player Name for FIFA ratings info</h3>
+            Player Name<br>
+            <input type = "text" name = "fpi" /></br>
+            <p><input type = "submit" value = "submit" /></p>
+         </form>
+      </div>
+   </body>
+</html>
+{% endblock %}
