@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Welcome{% endblock %}
+{% block content%}
+<html>
+    <body>
+        <div class="container">
+            <div class="p-4"></div>
+                <html>
+                    <h2>Welcome to Player Picker Pro</h2>
+ 
+                    <h3>Hi {{ current_user.username }}</h3>
+ 
+                    <a href="{{ url_for('logout')}}">Logout Here</a>
+        </div>
+    </body>
+</html>
+{% endblock %}
