@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Player Detail View{% endblock %}
+{% block content%}
+<html>
+   <body>
+        <div class="container">
+            <div class="col text-center">
+                <h1>Player FIFA 22 Attribute Ratings:</h1>
+                <div class="text-center">
+                    {% for row in rows %}
+                            <div class="text-center">
+                                <img src="{{row["PhotoUrl"]}}" class="img-fluid" alt="player image">
+                            </div>
+                        {% endfor %}
+                </div>
+                <table class="table table-hover">
+                    {% for row in rows %}
+                        <tr>
+                            <td>Player Name</td>
+                            <td>{{row["FullName"]}}</td>
+                        </tr>
+                        <tr>
+                            <td>Best Position</td>
+                            <td>{{row["BestPosition"]}}</td>
+                        </tr>
+                        <tr>
+                            <td>Age</td>
+                            <td>{{row["Age"]}}</td>
+                        </tr>
+                        <tr>
+                            <td>Height</td>
+                            <td>{{row["Height"]}}</td>
+                        </tr>
+                        <tr>
+                            <td>Weight</td>
+                            <td>{{row["Weight"]}}</td>
+                        </tr>
+                        <tr>
+                            <td>Overall Rating</td>
+                            <td>{{row["Overall"]}}</td>
+                        </tr>
+                        <tr>
+                            <td>Current Club</td>
+                            <td>{{row["Club"]}}</td>
+                        </tr>
+                        <tr>
+                            <td>Wage in Euros</td>
+                            <td>{{row["WageEUR"]}}</td>
+                        </tr>
+                        <tr>
+                            <td>Skill Moves Rating</td>
+                            <td>{{row["SkillMoves"]}}</td>
+                        </tr>
+                        <tr>
+                            <td>Shooting Rating</td>
+                            <td>{{row["ShootingTotal"]}}</td>
+                        </tr>
+                        <tr>
+                            <td>Passing Rating</td>
+                            <td>{{row["PassingTotal"]}}</td>
+                        </tr>
+                        <tr>
+                            <td>Dribbling Rating</td>
+                            <td>{{row["DribblingTotal"]}}</td>
+                        </tr>
+                        <tr>
+                            <td>Defending Rating</td>
+                            <td>{{row["DribblingTotal"]}}</td>
+                        </tr>
+                        <tr>
+                            <td>Physicality Rating</td>
+                            <td>{{row["PhysicalityTotal"]}}</td>
+                        </tr>
+                        <tr>
+                            <td>Finishing Rating</td>
+                            <td>{{row["Finishing"]}}</td>
+                        </tr>
+                        <tr>
+                            <td>Acceleration Rating</td>
+                            <td>{{row["Acceleration"]}}</td>
+                        </tr>
+                        <tr>
+                            <td>Agility Rating</td>
+                            <td>{{row["Agility"]}}</td>
+                        </tr>
+                        <tr>
+                            <td>Aggression Rating</td>
+                            <td>{{row["Aggression"]}}</td>
+                        </tr>
+                        <tr>
+                            <td>Marking Rating</td>
+                            <td>{{row["Marking"]}}</td>
+                        </tr>
+                        {% endfor %}
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
+{% endblock %}

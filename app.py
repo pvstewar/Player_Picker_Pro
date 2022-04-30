@@ -173,6 +173,19 @@ def pickrec_val():
         return render_template("pick_valresult.html",rows = rows)
     con.close()
 
+@app.route('/playerdet',methods = ['POST', 'GET'])
+def playerdet():
+    if request.method == 'POST':
+        pi = request.form['pi']
+         
+        con = sql.connect("fb.db")
+        con.row_factory = sql.Row
+        cur = con.cursor()
+        cur.execute("SELECT * from plyr_atr WHERE ID = ?",(pi,))
+        rows = cur.fetchall();
+        return render_template("player_details.html",rows = rows)
+    con.close()
+
 #app.debug = True
 if __name__ == "__main__":
     app.run(debug=True)
