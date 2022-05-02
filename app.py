@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 import sqlite3 as sql
-from flask_login import login_required, current_user, login_user, logout_user
+from flask_login import login_required, current_user, login_user, logout_user, user_loaded_from_cookie
 from models import UserModel,db,login
+from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
 app.secret_key = 'r3JEzW1*mK%nuiMl7tSX'
@@ -19,7 +20,7 @@ def create_all():
      
 @app.route('/welcome')
 @login_required
-def blog():
+def welcome():
     return render_template('welcome.html')
  
  
@@ -34,13 +35,13 @@ def login():
         if user is not None and user.check_password(request.form['password']):
             login_user(user)
             return redirect('/welcome')
-     
+    
     return render_template('login.html')
  
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     if current_user.is_authenticated:
-        return redirect('/blogs')
+        return redirect('/welcome')
      
     if request.method == 'POST':
         email = request.form['email']
@@ -60,7 +61,7 @@ def register():
  
 @app.route('/logout')
 def logout():
-    logout_user()
+    logout_user() 
     return redirect('/welcome')
 
 @app.route('/')
@@ -90,6 +91,10 @@ def league_stat():
 @app.route('/pick_player_val')
 def pick_player_val():
     return render_template('pick_player_val.html', content= "Pick a Player by Value")
+
+@app.route('/myteam')
+def my_team():
+    return render_template('myteam.html', content= "Your Team")
 
 @app.route('/teamrec',methods = ['POST', 'GET'])
 def teamrec():
@@ -186,6 +191,72 @@ def playerdet():
         return render_template("player_details.html",rows = rows)
     con.close()
 
-#app.debug = True
+@app.route('/playeradd',methods = ['POST', 'GET'])
+@login_required
+def playeradd():
+    if request.method == 'POST':
+        add = request.form.get('add')
+        slot = request.form.get('slot')
+        usr = current_user.username
+        con = sql.connect("ud.db")
+        con.row_factory = sql.Row
+        cur = con.cursor()
+        cur.execute("UPDATE users SET {slot}= {add} WHERE username='{user}'".format(slot=slot,add = add,user=usr));
+        con.commit()
+        con = sql.connect("ud.db")
+        con.row_factory = sql.Row
+        cur = con.cursor()
+        cur.execute("SELECT * FROM users WHERE username='{user}'".format(user=usr));
+        players = cur.fetchall();
+
+        con = sql.connect("fb.db")
+        con.row_factory = sql.Row
+        cur = con.cursor()
+        cur.execute("SELECT * FROM plyr_atr WHERE ID ={add}".format(add = add));
+        rows = cur.fetchall();
+        return render_template("player_added.html",rows = rows, players=players)
+    con.close()
+
+@app.route('/team_view',methods = ['POST', 'GET'])
+@login_required
+def team_view():
+    usr = current_user.username
+    idlst = []
+    con = sql.connect("ud.db")
+    con.row_factory = None
+    cur = con.cursor()
+    cur.execute("SELECT player1, player2, player3, player4, player5, player6, player7, player8, player9, player10, player11 FROM users  WHERE username='{user}'".format(user=usr));
+    for i in cur.fetchall():
+        idlst.append(str(i))
+    con.commit();
+    
+    #need to clean up my list of strings
+    idlst = idlst[0].split(", ")
+    char = '('
+    char2 = ')'
+    char3 = ','
+    char4 = ' '
+    for idx, ele in enumerate(idlst):
+        idlst[idx] = ele.replace(char, '')
+    for idx, ele in enumerate(idlst):
+        idlst[idx] = ele.replace(char2, '')
+    for idx, ele in enumerate(idlst):
+        idlst[idx] = ele.replace(char3, '')
+    for idx, ele in enumerate(idlst):
+        idlst[idx] = ele.replace(char4, '')
+
+    con = sql.connect("fb.db")
+    con.row_factory = sql.Row
+    cur = con.cursor()
+    cur.execute("SELECT * FROM plyr_atr WHERE ID in ({},{},{},{},{},{},{},{},{},{},{})".format(idlst[0],idlst[1],idlst[2],idlst[3],idlst[4],idlst[5],idlst[6],idlst[7],idlst[8],idlst[9],idlst[10]))
+    rows = cur.fetchall();
+    cur.execute("SELECT avg(Overall),sum(WageEUR) FROM plyr_atr WHERE ID in ({},{},{},{},{},{},{},{},{},{},{})".format(idlst[0],idlst[1],idlst[2],idlst[3],idlst[4],idlst[5],idlst[6],idlst[7],idlst[8],idlst[9],idlst[10]))
+    sta = cur.fetchall();
+    con.close()
+
+    return render_template("myteam.html",rows = rows, sta = sta)
+
+app.debug = False
+toolbar = DebugToolbarExtension(app)
 if __name__ == "__main__":
     app.run(debug=True)
