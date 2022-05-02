@@ -6,13 +6,36 @@
         <div class="container">
             <div class="col text-center">
                 <h1>Player FIFA 22 Attribute Ratings:</h1>
-                <div class="text-center">
+                    {% for row in rows %}
+                        <form action = "{{ url_for('playeradd') }}" method = "POST">
+                            <label for="id">ID for {{row["FullName"]}}</label>
+                            <input type="id" name="add" value="{{row["ID"]}}" required>
+                            <!--<input type = "radio" name="add" value={{row["ID"]}} >Click to Add to your team</input>-->
+                            <h3>Select Player slot to fill</h3>
+                            <select class="form-select" name="slot" value="slot">
+                            <option selected>Pick slot from the list</option>
+                            <option value="player1">Player Slot 1</option>
+                            <option value="player2">Player Slot 2</option>
+                            <option value="player3">Player Slot 3</option>
+                            <option value="player4">Player Slot 4</option>
+                            <option value="player5">Player Slot 5</option>
+                            <option value="player6">Player Slot 6</option>
+                            <option value="player7">Player Slot 7</option>
+                            <option value="player8">Player Slot 8</option>
+                            <option value="player9">Player Slot 9</option>
+                            <option value="player10">Player Slot 10</option>
+                            <option value="player11">Goalkeeper Slot 11</option>
+                            <p><input type = "submit" value = "submit" required/></p>
+                            </select>
+                        </form>
+                    {% endfor %}
+                <!--<div class="text-center">
                     {% for row in rows %}
                             <div class="text-center">
                                 <img src="{{row["PhotoUrl"]}}" class="img-fluid" alt="player image">
                             </div>
                         {% endfor %}
-                </div>
+                </div>-->
                 <table class="table table-hover">
                     {% for row in rows %}
                         <tr>

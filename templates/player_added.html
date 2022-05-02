@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Team Result{% endblock %}
+{% block content%}
+<html>
+   <body>
+   <div class="p-4"></div>
+   {% for row in rows %}
+   <h1>{{row["FullName"]}} Added to {{ current_user.username }}'s Team</h1>
+   {% endfor %}
+   <p>Here is your team so far. Once all slots have ID numbers click below to view the team roster.</p>
+      <table class="table table-hover">
+         <thead>
+            <td>Player 1</td>
+            <td>Player 2</td>
+            <td>Player 3</td>
+            <td>Player 4</td>
+            <td>Player 5</td>
+            <td>Player 6</td>
+            <td>Player 7</td>
+            <td>Player 8</td>
+            <td>Player 9</td>
+            <td>Player 10</td>
+            <td>Goal Keeper</td>
+         </thead>
+         
+         {% for player in players %}
+            <tr>
+               <td>{{player["player1"]}}</td>
+               <td>{{player["player2"]}}</td>
+               <td>{{player["player3"]}}</td>	
+               <td>{{player["player4"]}}</td>	
+               <td>{{player["player5"]}}</td>	
+               <td>{{player["player6"]}}</td>	
+               <td>{{player["player7"]}}</td>	
+               <td>{{player["player8"]}}</td>	
+               <td>{{player["player9"]}}</td>	
+               <td>{{player["player10"]}}</td>
+               <td>{{player["player11"]}}</td>
+         {% endfor %}
+            </tr>
+      </table>
+   
+      
+         
+      <a href = "/team_view">See {{ current_user.username }}'s Team Roster</a>
+      
+      <a href = "/">Go back to home page</a>
+      
+   </body>
+</html>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}My Team{% endblock %}
+{% block content%}
+<!doctype html>
+<html lang="en">
+<html>
+    <body>
+        <div class="p-4">
+        <h1>{{ current_user.username }}'s Team:</h1>
+        <table class="table table-hover">
+            <thead>
+                <td>Player ID</td>
+                <td>Player Name</td>
+            </thead>
+            {% for row in rows %}
+            <tr>
+                <td>{{row["ID"]}}</td>
+                <td>{{row["FullName"]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        </div>
+        <div class="p-4">
+        <table class="table table-hover">
+            <thead>
+                <td>Average Team Overall Rating</td>
+                <td>Total Team Wage</td>
+            </thead>
+            {% for s in sta %}
+            <tr>
+                <td>{{s["avg(Overall)"]}}</td>
+                <td>{{s["sum(WageEUR)"]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        </div>
+    </body>
+    <a href = "/">Go back to home page</a>
+</html>
+{% endblock %}
