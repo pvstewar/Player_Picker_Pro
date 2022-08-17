@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect
 import sqlite3 as sql
-from flask_login import login_required, current_user, login_user, logout_user, user_loaded_from_cookie
+from flask_login import login_required, current_user, login_user, logout_user
 from models import UserModel,db,login
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -13,55 +13,55 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 login.init_app(app)
 login.login_view = 'login'
- 
+
 @app.before_first_request
 def create_all():
     db.create_all()
-     
+
 @app.route('/welcome')
 @login_required
-def welcome():
+def blog():
     return render_template('welcome.html')
- 
- 
+
+
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
     if current_user.is_authenticated:
         return redirect('/welcome')
-     
+
     if request.method == 'POST':
         email = request.form['email']
         user = UserModel.query.filter_by(email = email).first()
         if user is not None and user.check_password(request.form['password']):
             login_user(user)
             return redirect('/welcome')
-    
+
     return render_template('login.html')
- 
+
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     if current_user.is_authenticated:
         return redirect('/welcome')
-     
+
     if request.method == 'POST':
         email = request.form['email']
         username = request.form['username']
         password = request.form['password']
- 
+
         if UserModel.query.filter_by(email=email).first():
             return ('Email already Present')
-             
+
         user = UserModel(email=email, username=username)
         user.set_password(password)
         db.session.add(user)
         db.session.commit()
         return redirect('/login')
     return render_template('register.html')
- 
- 
+
+
 @app.route('/logout')
 def logout():
-    logout_user() 
+    logout_user()
     return redirect('/welcome')
 
 @app.route('/')
@@ -75,6 +75,10 @@ def team_ratings():
 @app.route('/pick_player')
 def pick_player():
     return render_template('pick_player.html', content= "Pick a Player by Wage")
+
+@app.route('/about')
+def about():
+    return render_template('about.html', content= "about this site")
 
 @app.route('/player_stats')
 def player_stats():
@@ -100,8 +104,8 @@ def my_team():
 def teamrec():
     if request.method == 'POST':
         tn = request.form['tn']
-         
-        con = sql.connect("fb.db")
+
+        con = sql.connect("/home/peeves/mysite/fb.db")
         con.row_factory = sql.Row
         cur = con.cursor()
         cur.execute("SELECT * from teams WHERE Name LIKE ?",('%'+tn+'%',))
@@ -113,8 +117,8 @@ def teamrec():
 def plyrrec():
     if request.method == 'POST':
         pn = request.form['pn']
-         
-        con = sql.connect("fb.db")
+
+        con = sql.connect("/home/peeves/mysite/fb.db")
         con.row_factory = sql.Row
         cur = con.cursor()
         cur.execute("SELECT * from plyr_stat WHERE player_name LIKE ?",('%'+pn+'%',))
@@ -126,8 +130,8 @@ def plyrrec():
 def fifa_plyrrec():
     if request.method == 'POST':
         fpi = request.form['fpi']
-         
-        con = sql.connect("fb.db")
+
+        con = sql.connect("/home/peeves/mysite/fb.db")
         con.row_factory = sql.Row
         cur = con.cursor()
         cur.execute("SELECT * from plyr_atr WHERE FullName LIKE ?",('%'+fpi+'%',))
@@ -142,8 +146,8 @@ def pickrec():
     if request.method == 'POST':
         wg = request.form.get('wg')
         pos = request.form.get('pos')
-        
-        con = sql.connect("fb.db")
+
+        con = sql.connect("/home/peeves/mysite/fb.db")
         con.row_factory = sql.Row
         cur = con.cursor()
         cur.execute('SELECT * from plyr_atr WHERE WageEUR <= {wage} ORDER BY {col} DESC LIMIT 25'.format(wage=wg, col=pos))
@@ -155,8 +159,8 @@ def pickrec():
 def leaguerec():
     if request.method == 'POST':
         lg = request.form['lg']
-         
-        con = sql.connect("fb.db")
+
+        con = sql.connect("/home/peeves/mysite/fb.db")
         con.row_factory = sql.Row
         cur = con.cursor()
         cur.execute("SELECT * from league WHERE squad LIKE ?",('%'+lg+'%',))
@@ -169,8 +173,8 @@ def pickrec_val():
     if request.method == 'POST':
         val = request.form.get('val')
         pos = request.form.get('pos')
-        
-        con = sql.connect("fb.db")
+
+        con = sql.connect("/home/peeves/mysite/fb.db")
         con.row_factory = sql.Row
         cur = con.cursor()
         cur.execute('SELECT * from plyr_atr WHERE ValueEUR <= {value} ORDER BY {col} DESC LIMIT 25'.format(value=val, col=pos))
@@ -182,8 +186,8 @@ def pickrec_val():
 def playerdet():
     if request.method == 'POST':
         pi = request.form['pi']
-         
-        con = sql.connect("fb.db")
+
+        con = sql.connect("/home/peeves/mysite/fb.db")
         con.row_factory = sql.Row
         cur = con.cursor()
         cur.execute("SELECT * from plyr_atr WHERE ID = ?",(pi,))
@@ -198,18 +202,18 @@ def playeradd():
         add = request.form.get('add')
         slot = request.form.get('slot')
         usr = current_user.username
-        con = sql.connect("ud.db")
+        con = sql.connect("/home/peeves/mysite/ud.db")
         con.row_factory = sql.Row
         cur = con.cursor()
         cur.execute("UPDATE users SET {slot}= {add} WHERE username='{user}'".format(slot=slot,add = add,user=usr));
         con.commit()
-        con = sql.connect("ud.db")
+        con = sql.connect("/home/peeves/mysite/ud.db")
         con.row_factory = sql.Row
         cur = con.cursor()
         cur.execute("SELECT * FROM users WHERE username='{user}'".format(user=usr));
         players = cur.fetchall();
 
-        con = sql.connect("fb.db")
+        con = sql.connect("/home/peeves/mysite/fb.db")
         con.row_factory = sql.Row
         cur = con.cursor()
         cur.execute("SELECT * FROM plyr_atr WHERE ID ={add}".format(add = add));
@@ -222,14 +226,14 @@ def playeradd():
 def team_view():
     usr = current_user.username
     idlst = []
-    con = sql.connect("ud.db")
+    con = sql.connect("/home/peeves/mysite/ud.db")
     con.row_factory = None
     cur = con.cursor()
     cur.execute("SELECT player1, player2, player3, player4, player5, player6, player7, player8, player9, player10, player11 FROM users  WHERE username='{user}'".format(user=usr));
     for i in cur.fetchall():
         idlst.append(str(i))
     con.commit();
-    
+
     #need to clean up my list of strings
     idlst = idlst[0].split(", ")
     char = '('
@@ -245,7 +249,7 @@ def team_view():
     for idx, ele in enumerate(idlst):
         idlst[idx] = ele.replace(char4, '')
 
-    con = sql.connect("fb.db")
+    con = sql.connect("/home/peeves/mysite/fb.db")
     con.row_factory = sql.Row
     cur = con.cursor()
     cur.execute("SELECT * FROM plyr_atr WHERE ID in ({},{},{},{},{},{},{},{},{},{},{})".format(idlst[0],idlst[1],idlst[2],idlst[3],idlst[4],idlst[5],idlst[6],idlst[7],idlst[8],idlst[9],idlst[10]))
@@ -258,5 +262,6 @@ def team_view():
 
 app.debug = False
 toolbar = DebugToolbarExtension(app)
+#app.debug = True
 if __name__ == "__main__":
     app.run(debug=True)
