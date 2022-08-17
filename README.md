@@ -1,2 +1,2 @@
 # Player_Picker_Pro
- Website files for D532 final proj
+ Website files for Player Picker Pro site.
