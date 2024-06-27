@@ -14,6 +14,18 @@ db.init_app(app)
 login.init_app(app)
 login.login_view = 'login'
 
+def query_string_func( what, where, id_list):
+    query_string = f"SELECT {what} FROM {where} WHERE ID IN ("
+
+    for idx, player_id in enumerate(id_list):
+        if player_id:  # Check if player_id is not empty
+            query_string += f"'{player_id}'"  # Enclose player_id in quotes using f-string
+            if idx < len(id_list)-1:  # Add comma only if not last element
+                query_string += ","
+
+    query_string += ")"
+    return query_string
+
 @app.before_first_request
 def create_all():
     db.create_all()
@@ -226,39 +238,50 @@ def playeradd():
 def team_view():
     usr = current_user.username
     idlst = []
+    sel_all='*'
+    ov_wg = 'avg(Overall),sum(WageEUR)'
+    player_at = 'plyr_atr'
     con = sql.connect("/home/peeves/mysite/ud.db")
     con.row_factory = None
     cur = con.cursor()
     cur.execute("SELECT player1, player2, player3, player4, player5, player6, player7, player8, player9, player10, player11 FROM users  WHERE username='{user}'".format(user=usr));
+
     for i in cur.fetchall():
         idlst.append(str(i))
     con.commit();
 
-    #need to clean up my list of strings
-    idlst = idlst[0].split(", ")
-    char = '('
-    char2 = ')'
-    char3 = ','
-    char4 = ' '
-    for idx, ele in enumerate(idlst):
-        idlst[idx] = ele.replace(char, '')
-    for idx, ele in enumerate(idlst):
-        idlst[idx] = ele.replace(char2, '')
-    for idx, ele in enumerate(idlst):
-        idlst[idx] = ele.replace(char3, '')
-    for idx, ele in enumerate(idlst):
-        idlst[idx] = ele.replace(char4, '')
+    # Clean up the list of strings
+    if idlst:
+        idlst = idlst[0].split(", ")
+        char = '('
+        char2 = ')'
+        char3 = ','
+        char4 = ' '
+        for idx, ele in enumerate(idlst):
+            idlst[idx] = ele.replace(char, '')
+        for idx, ele in enumerate(idlst):
+            idlst[idx] = ele.replace(char2, '')
+        for idx, ele in enumerate(idlst):
+            idlst[idx] = ele.replace(char3, '')
+        for idx, ele in enumerate(idlst):
+            idlst[idx] = ele.replace(char4, '')
 
-    con = sql.connect("/home/peeves/mysite/fb.db")
-    con.row_factory = sql.Row
-    cur = con.cursor()
-    cur.execute("SELECT * FROM plyr_atr WHERE ID in ({},{},{},{},{},{},{},{},{},{},{})".format(idlst[0],idlst[1],idlst[2],idlst[3],idlst[4],idlst[5],idlst[6],idlst[7],idlst[8],idlst[9],idlst[10]))
-    rows = cur.fetchall();
-    cur.execute("SELECT avg(Overall),sum(WageEUR) FROM plyr_atr WHERE ID in ({},{},{},{},{},{},{},{},{},{},{})".format(idlst[0],idlst[1],idlst[2],idlst[3],idlst[4],idlst[5],idlst[6],idlst[7],idlst[8],idlst[9],idlst[10]))
-    sta = cur.fetchall();
-    con.close()
+        con = sql.connect("/home/peeves/mysite/fb.db")
+        con.row_factory = sql.Row
+        cur = con.cursor()
 
-    return render_template("myteam.html",rows = rows, sta = sta)
+        query_1 = query_string_func( sel_all, player_at, idlst)
+        cur.execute(query_1)
+        rows = cur.fetchall();
+        query_2 = query_string_func( ov_wg, player_at, idlst)
+        cur.execute(query_2)
+        sta = cur.fetchall();
+        con.close()
+
+    if not idlst:
+        return render_template("myteam.html", message="You haven't added any players to your team yet!")
+
+    return render_template("myteam.html",rows = rows, sta = sta, message=message if rows is None else None)
 
 app.debug = False
 toolbar = DebugToolbarExtension(app)
